@@ -1,11 +1,23 @@
 #!/usr/bin/env bash
 set -e
 
-# Build Docker images
+if ! command -v docker >/dev/null 2>&1 || ! command -v docker-compose >/dev/null 2>&1; then
+    echo "Docker and docker-compose are required to run this script." >&2
+    echo "You can run PrivateGPT locally using Poetry instead:" >&2
+    echo "  PGPT_PROFILES=local make run" >&2
+    exit 1
+fi
+
+if ! docker info >/dev/null 2>&1; then
+    echo "Docker daemon is not running or not accessible." >&2
+    echo "Start Docker or run locally with:" >&2
+    echo "  PGPT_PROFILES=local make run" >&2
+    exit 1
+fi
+
 echo "Building Docker images..."
 docker-compose build
 
-# Start containers in the background
 echo "Starting containers..."
 docker-compose up -d
 
