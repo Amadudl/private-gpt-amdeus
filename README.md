@@ -78,6 +78,24 @@ Stay tuned to our [releases](https://github.com/zylon-ai/private-gpt/releases) t
 Full documentation on installation, dependencies, configuration, running the server, deployment options,
 ingesting local documents, API details and UI features can be found here: https://docs.privategpt.dev/
 
+## 🚀 Getting Started
+
+Run PrivateGPT either with Docker or directly using Poetry. When Docker is available you can simply execute
+
+```bash
+./start.sh
+```
+
+If Docker is not installed or cannot be started (e.g. in restricted environments), you can run everything
+locally using Poetry:
+
+```bash
+poetry install --extras "ui llms-llama-cpp embeddings-huggingface vector-stores-qdrant"
+PGPT_PROFILES=local make run
+```
+
+The UI will be available at <http://localhost:8001>.
+
 ## 🧩 Architecture
 Conceptually, PrivateGPT is an API that wraps a RAG pipeline and exposes its
 primitives.
