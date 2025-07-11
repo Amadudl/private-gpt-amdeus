@@ -1,14 +1,9 @@
 @echo off
 
-rem Build Docker images
+rem Build and start containers
 
-echo Building Docker images...
-docker-compose build
-
-rem Start containers
-
-echo Starting containers...
-docker-compose up -d
+echo Building and starting containers...
+docker compose up --build -d
 
 rem Open default browser at the UI
 

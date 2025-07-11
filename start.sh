@@ -1,8 +1,20 @@
 #!/usr/bin/env bash
 set -e
 
-if ! command -v docker >/dev/null 2>&1 || ! command -v docker-compose >/dev/null 2>&1; then
-    echo "Docker and docker-compose are required to run this script." >&2
+if ! command -v docker >/dev/null 2>&1; then
+    echo "Docker is required to run this script." >&2
+    echo "You can run PrivateGPT locally using Poetry instead:" >&2
+    echo "  PGPT_PROFILES=local make run" >&2
+    exit 1
+fi
+
+# Determine which compose command is available (docker compose or docker-compose)
+if command -v docker-compose >/dev/null 2>&1; then
+    COMPOSE_CMD="docker-compose"
+elif docker compose version >/dev/null 2>&1; then
+    COMPOSE_CMD="docker compose"
+else
+    echo "Docker Compose is required to run this script." >&2
     echo "You can run PrivateGPT locally using Poetry instead:" >&2
     echo "  PGPT_PROFILES=local make run" >&2
     exit 1
@@ -15,11 +27,8 @@ if ! docker info >/dev/null 2>&1; then
     exit 1
 fi
 
-echo "Building Docker images..."
-docker-compose build
-
-echo "Starting containers..."
-docker-compose up -d
+echo "Building and starting containers..."
+$COMPOSE_CMD up --build -d
 
 # Open default browser at the UI
 echo "Launching browser..."
