@@ -1,11 +1,12 @@
 @echo off
 
-rem Build and start containers
+rem Install dependencies and run PrivateGPT locally
 
-echo Building and starting containers...
-docker compose up --build -d
+echo Installing dependencies...
+poetry install --no-interaction
 
-rem Open default browser at the UI
+echo Starting PrivateGPT in a new window...
+start "PrivateGPT" cmd /k "set PGPT_PROFILES=local && poetry run python -m private_gpt"
 
 echo Launching browser...
 start "" http://localhost:8001
